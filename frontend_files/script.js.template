@@ -1,0 +1,72 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const textForm = document.getElementById('text-form');
+    const inputText = document.getElementById('input-text');
+    const resultDiv = document.getElementById('result');
+    const oneTimeUrl = document.getElementById('one-time-url');
+    const copyUrlBtn = document.getElementById('copy-url-btn');
+    const successMessage = document.getElementById('success-message');
+
+    textForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const text = inputText.value;
+
+        successMessage.textContent = '';
+        successMessage.classList.remove('success-message');
+    
+        if (!text) {
+            alert('Please enter some text');
+            return;
+        }
+    
+        submitText(text).then(function(oneTimeUrlResponse) {
+            oneTimeUrl.textContent = oneTimeUrlResponse;
+            resultDiv.classList.remove('hidden');
+            copyUrlBtn.parentNode.style.display = 'block';
+        }).catch(function(error) {
+            console.error('Error:', error);
+            alert('Error generating one-time URL');
+        });
+    });
+    
+
+    copyUrlBtn.addEventListener('click', async function() {
+        const oneTimeUrlText = oneTimeUrl.textContent;
+        if (!navigator.clipboard) {
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = oneTimeUrlText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+            successMessage.textContent = 'URL copied to clipboard';
+            successMessage.classList.add('success-message');
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(oneTimeUrlText);
+            successMessage.textContent = 'URL copied to clipboard';
+            successMessage.classList.add('success-message');
+        } catch (err) {
+            console.error('Failed to copy URL: ', err);
+            alert('Failed to copy URL');
+        }
+    });
+
+    async function submitText(text) {
+        const apiUrl = '__APIGW_URL__';
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            body: JSON.stringify({ text }),
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error ${response.status}`);
+        }
+
+        const jsonResponse = await response.json();
+        const responseBody = JSON.parse(jsonResponse.body);
+        return responseBody.one_time_url;
+    }
+
+});

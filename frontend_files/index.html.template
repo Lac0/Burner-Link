@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burner Link</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link rel="shortcut icon" type="image/x-icon" href="__CLOUDFRONT_URL__/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="__CLOUDFRONT_URL__/apple-touch-icon.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Burner Link">
+</head>
+<body>
+    <div class="container">
+        <h1>
+              <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" font-family="Old English Text MT" fill="#ffffff" font-size="170">Burner Link</text>
+        </h1>
+        <form id="text-form">
+            <label for="input-text">Enter your text:</label>
+            <textarea id="input-text" rows="4" cols="50"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="result" class="hidden">
+            Your one-time URL:
+            <br>
+            <span id="one-time-url"></span>
+            <br>
+            <button id="copy-url-btn" type="button">Copy</button>
+            <div id="success-message"></div>
+        </div>
+    </div>
+      
+</body>
+</html>

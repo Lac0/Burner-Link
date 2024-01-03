@@ -1,0 +1,15 @@
+.vscode
+.$burn3link.drawio.bkp
+.$burn3link.drawio.
+dtmp
+.venv/
+cdk.out/
+CDK/cdk.out/
+outputs.json
+src/
+give_secret_lambda/template.html
+frontend_files/script.js
+frontend_files/index.html
+IAC/__pycache__/
+give_secret_lambda/give_secret_lambda.zip
+CDK/package-lock.json

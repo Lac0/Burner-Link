@@ -1,0 +1,36 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+  build:
+    commands:
+      - echo "Zipping the Lambda functions"
+      - zip get_secret.zip ./get_secret_lambda/get_secret_give_link.py
+      - cd give_secret_lambda && zip ../give_secret.zip give_secret.py template.html && cd ..
+      - zip invalidate_cache.zip invalidate_cache.py
+  post_build:
+    commands:
+
+      - sed -i "s|__CLOUDFRONT_URL__|$CLOUDFRONT_URL|g" index.html
+      - sed -i "s|__S3_BUCKET_NAME__|$S3_BUCKET_NAME|g" index.html
+
+      - aws s3 cp get_secret.zip s3://$S3_BUCKET_NAME/lambda/
+      - aws lambda update-function-code --function-name keep_me --s3-bucket $S3_BUCKET_NAME --s3-key lambda/get_secret.zip
+
+      - aws s3 cp give_secret.zip s3://$S3_BUCKET_NAME/lambda/
+      - aws lambda update-function-code --function-name Give_secret --s3-bucket $S3_BUCKET_NAME --s3-key lambda/give_secret.zip
+
+      - aws s3 cp invalidate_cache.zip s3://$S3_BUCKET_NAME/lambda/
+      - aws lambda update-function-code --function-name invalidate_cloudfront_cache --s3-bucket $S3_BUCKET_NAME --s3-key lambda/invalidate_cache.zip
+artifacts:
+  files: []
+  secondary-artifacts:
+    frontend:
+      files:
+        - 'frontend_files/*'
+    lambda:
+      files:
+        - get_secret.zip
+        - give_secret.zip
+        - invalidate_cache.zip

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retrieve Data</title>
+    <link rel="shortcut icon" type="image/x-icon" href="__CLOUDFRONT_URL__/apple-touch-icon.png">
+    <link rel="apple-touch-icon" href="__CLOUDFRONT_URL__/apple-touch-icon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            background-color: #000000;
+            color: #f1f1f1;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #000000;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 3em;
+            color: #22ff00;
+        }
+
+        button {
+            display: block;
+            width: 200px;
+            margin: auto;
+            padding: 15px;
+            background-color: #555;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 2px;
+            font-family: inherit;
+            font-size: inherit;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #777;
+        }
+
+        #data {
+            margin-top: 2px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        pre {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 5px;
+            overflow: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #copy-button {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Press the button to get data:</h1>
+        <button onclick="fetchData()">Get data</button>
+        <button id="copy-button" onclick="copyData()">Copy</button>
+        <div id="data"></div>
+    </div>
+    <script>
+        function escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        function fetchData() {
+            var unique_id = window.location.pathname.split('/').pop();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("data").innerHTML = '<pre><code>' + escapeHtml(this.responseText) + '</code></pre>';
+                    document.getElementById("copy-button").style.display = "block";
+                } else if (this.readyState == 4 && this.status == 404) {
+                    document.getElementById("data").innerHTML =
+                    document.getElementById("data").innerHTML = "Item not found";
+                }
+            };
+            xhttp.open("GET", "__APIGW_URL__" + "/" + unique_id + "/data", true);
+            xhttp.send();
+        }
+
+        function copyData() {
+            var dataElement = document.querySelector("#data pre code");
+            if (!dataElement) {
+                alert("No data to copy!");
+                return;
+            }
+            var text = dataElement.innerText || dataElement.textContent;
+            var textArea = document.createElement("textarea");
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            alert("Data copied to clipboard.");
+        }
+    </script>
+</body>
+</html>
