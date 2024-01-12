@@ -6,10 +6,10 @@ Deploy to AWS with CDK, free tier eligible.
 
 ## Prerequisites
 
-- [AWS CLI](https://aws.amazon.com/cli/): You should also have an AWS account set up with permissions to deploy services.
-- [CDK](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
-- [NodeJS](https://nodejs.org/en/download/)
-- [Python](https://www.python.org/downloads/)
+- [AWS CLI latest](https://aws.amazon.com/cli/): You should also have an AWS account set up with permissions to deploy services.
+- [CDK 2.0 or later](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
+- [NodeJS 14.15.0 or later](https://nodejs.org/en/download/)
+- [Python 3.10](https://www.python.org/downloads/) 
 
 ## Setup
 
