@@ -14,3 +14,4 @@ IAC/__pycache__/
 give_secret_lambda/function.zip
 give_secret_lambda/give_secret_lambda.zip
 CDK/package-lock.json
+IAC/output.txt
