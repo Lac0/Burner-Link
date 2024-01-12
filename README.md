@@ -8,7 +8,7 @@ Deploy to AWS with CDK, free tier eligible.
 
 - [AWS CLI latest](https://aws.amazon.com/cli/): You should also have an AWS account set up with permissions to deploy services.
 - [CDK 2.0 or later](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html)
-- [NodeJS 14.15.0 or later](https://nodejs.org/en/download/)
+- [NodeJS 14.15.0 or later](https://nodejs.org/en/download/) npm install -g aws-cdk
 - [Python 3.10](https://www.python.org/downloads/) 
 
 ## Setup
@@ -25,9 +25,6 @@ export AWS_PROFILE=cdk
 
 # Set your AWS region
 export AWS_DEFAULT_REGION=yourregion
-
-# Install AWS CDK globally
-npm install -g aws-cdk
 
 # Create a Python virtual environment
 python -m venv .venv
